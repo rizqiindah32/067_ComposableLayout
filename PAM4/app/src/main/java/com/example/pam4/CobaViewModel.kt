@@ -15,6 +15,8 @@ class CobaViewModel : ViewModel(){
         private set
     var noTlp: String by mutableStateOf("")
         private set
+    var email: String by mutableStateOf("")
+        private set
     var alamat: String by mutableStateOf("")
         private set
     var jenisKl: String by mutableStateOf("")
