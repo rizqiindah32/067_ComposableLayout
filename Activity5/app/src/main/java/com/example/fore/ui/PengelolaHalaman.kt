@@ -31,9 +31,11 @@ import com.example.fore.data.SumberData.flavors
 enum class PengelolaHalaman {
     Home,
     Rasa,
+    Form,
     Summary,
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForeAppBar(
     bisaNavigasiBack: Boolean,
@@ -73,6 +75,7 @@ fun ForeApp(
         }
     ){ innerPadding ->
         val uiState by viewModel.stateUI.collectAsState()
+        val nameState by viewModel.nameST.collectAsState()
         NavHost(
             navController = navController ,
             startDestination = PengelolaHalaman.Home.name,
@@ -83,6 +86,14 @@ fun ForeApp(
                     onNextButtonClicked = {
                         navController.navigate(PengelolaHalaman.Rasa.name) })
                 }
+            composable(route = PengelolaHalaman.Form.name){
+                DataFrom(
+                    onSubmitButtonClicked = {
+                        viewModel.setNama(it)
+                        navController.navigate(PengelolaHalaman.Rasa.name)},
+                    onBackButtonClicked = {navController.popBackStack()
+                    })
+            }
             composable(route = PengelolaHalaman.Rasa.name){
                 val context = LocalContext.current
                 HalamanSatu(
@@ -101,6 +112,7 @@ fun ForeApp(
             composable(route = PengelolaHalaman.Summary.name){
                 HalamanDua(
                     orderUiState = uiState,
+                    formState = nameState,
                     onCancelButtonClicked = {cancelOrderAndNavigateToRasa(navController)},)
             }
         }
